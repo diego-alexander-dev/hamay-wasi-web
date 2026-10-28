@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments :: head('Inicio')}"></head>
+
+<body>
+    <header th:replace="~{fragments :: nav('inicio')}"></header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hw-hero" aria-label="Bienvenida">
+            <div id="heroCarrusel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000"
+                data-bs-pause="false" aria-hidden="true">
+                <div class="carousel-inner">
+                    <div th:each="img, it : ${heroImagenes}" class="carousel-item"
+                        th:classappend="${it.first} ? 'active'">
+                        <img th:src="${img}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="container hw-hero-contenido">
+                <p class="hw-sub hw-sub-claro">Tu conexión con el Valle del Mantaro comienza aquí.</p>
+                <h1>Un Descanso para Cada<br>Aventura</h1>
+                <p class="hw-lead">Cada rincón, una historia. Cada momento, una experiencia inolvidable en Huancayo.</p>
+                <a class="hw-hero-btn" href="#habitaciones">
+                    <span class="hw-hero-chip"><img th:src="@{/img/logo-hamay.png}" alt=""></span>
+                    <span>
+                        <strong class="d-block">Descubre Nuestras Suites</strong>
+                        <small>Experiencias de confort en Huancayo</small>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <!-- HABITACIONES -->
+        <section id="habitaciones" class="hw-seccion">
+            <div class="container">
+                <div class="row g-4 align-items-end mb-5">
+                    <div class="col-lg-6">
+                        <p class="hw-sub">Tu conexión comienza aquí.</p>
+                        <h2 class="hw-h2 mb-0">Un Descanso para Cada Aventura</h2>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                        <p class="mb-0">Cada categoría ha sido diseñada para ofrecer una experiencia única, desde el
+                            confort esencial hasta la amplitud ideal.</p>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-sm-6 col-xl-3" th:each="c : ${categorias}">
+                        <a class="hw-cat" th:href="@{/habitaciones}">
+                            <div class="hw-cat-img">
+                                <img th:src="${c.imagen()}" th:alt="${c.titulo()}" loading="lazy">
+                                <span class="hw-etiqueta" th:text="${c.etiqueta()}">Etiqueta</span>
+                            </div>
+                            <h3 th:text="${c.titulo()}">Título</h3>
+                            <p class="mb-0" th:text="${c.descripcion()}">Descripción</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESTINO HUANCAYO -->
+        <section id="destino" class="hw-seccion hw-destino">
+            <div class="container">
+                <div class="row g-4 align-items-end mb-5">
+                    <div class="col-lg-6">
+                        <p class="hw-sub hw-sub-claro">Huancayo, Perú</p>
+                        <h2 class="hw-h2 mb-0">Tesoros del Valle</h2>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                        <p class="mb-0">Desliza y descubre las maravillas que te esperan en tu estadía.</p>
+                    </div>
+                </div>
+                <div class="hw-tesoros">
+                    <div class="hw-tesoro" th:each="a : ${atractivos}" tabindex="0" role="button" aria-expanded="false"
+                        th:style="'background-image:url(' + ${a.imagen()} + ')'">
+                        <div>
+                            <h3 th:text="${a.nombre()}">Atractivo</h3>
+                            <p th:text="${a.intro()}">Descripción</p>
+                            <a class="btn btn-hw btn-sm rounded-pill mt-3 hw-explorar"
+                                th:href="'https://www.google.com/maps/search/?api=1&amp;query=' + ${#uris.escapeQueryParam(a.nombre() + ' Huancayo')}"
+                                target="_blank" rel="noopener noreferrer">Explorar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section id="servicios" class="hw-seccion">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-4">
+                        <div class="sticky-lg-top hw-sticky-titulo">
+                            <p class="hw-sub">Comodidades</p>
+                            <h2 class="hw-h2">Servicios Exclusivos</h2>
+                            <div class="hw-linea"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <article class="hw-servicio" th:each="s : ${servicios}">
+                            <img th:src="${s.imagen()}" th:alt="${s.titulo()}" loading="lazy">
+                            <div>
+                                <h3 th:text="${s.titulo()}">Servicio</h3>
+                                <p class="mb-0" th:text="${s.descripcion()}">Descripción</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUESTRA ESENCIA -->
+        <section id="esencia" class="hw-seccion hw-esencia">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-6">
+                        <p class="hw-sub">Nuestra esencia</p>
+                        <h2 class="hw-h2">Tradición y Modernidad, su casa en la Ciudad Incontrastable</h2>
+                        <p>Desde nuestra fundación, hemos sido el punto de encuentro entre la elegancia y la mística de
+                            la región. Ubicados en el corazón de Huancayo, ofrecemos un refugio de paz donde cada
+                            detalle cuenta una historia.</p>
+                        <p class="mb-0">Hamay Wasi ha sido el refugio predilecto de viajeros que buscan experimentar la
+                            auténtica cultura andina con el confort y la elegancia de un hotel boutique.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="hw-marco">
+                            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1000"
+                                alt="Instalaciones de Hamay Wasi" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LLAMADO A LA ACCION -->
+        <section id="contacto" class="hw-seccion hw-cta">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-7">
+                        <p class="hw-sub hw-sub-claro">¿Listo para tu aventura?</p>
+                        <h2 class="hw-h2">Reserva tu Experiencia</h2>
+                        <h3 class="hw-wanka">Wanka</h3>
+                        <p class="mb-0">Nuestro equipo está listo para ayudarte a planificar la estadía perfecta en el
+                            corazón del Valle del Mantaro. Personalizamos cada detalle de tu viaje.</p>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1 d-grid gap-3">
+                        <a class="btn btn-hw btn-lg rounded-pill" href="tel:+51969922828"><i
+                                class="bi bi-telephone me-2"></i>LLAMAR AHORA</a>
+                        <a class="btn btn-hw-linea-claro btn-lg rounded-pill" href="https://wa.me/51969922828"
+                            target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp me-2"></i>ENVIAR
+                            MENSAJE</a>
+                        <a class="text-center hw-link-claro" th:href="@{/reservas}">Reservar ahora en línea</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragments :: footer}"></footer>
+    <a th:replace="~{fragments :: whatsapp}"></a>
+    <th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+
+</html>

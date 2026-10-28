@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Reservas')}"></head>
+<body class="hw-reserva"
+      th:with="t=${(tab == 'informacion' or tab == 'contacto' or tab == 'normas') ? tab : 'disponibilidad'}">
+
+<header class="hw-rtop">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2 py-2">
+        <a class="d-flex align-items-center gap-2 text-decoration-none hw-rmarca" th:href="@{/}">
+            <img th:src="@{/img/logo-hamay.png}" alt="Hamay Wasi">
+            <span class="hw-estrellas" aria-label="Hotel Boutique">★★★</span>
+        </a>
+        <ul class="nav nav-underline hw-rtabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" th:classappend="${t == 'disponibilidad'} ? 'active'" data-bs-toggle="tab"
+                        data-bs-target="#pane-disponibilidad" type="button" role="tab">Disponibilidad</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" th:classappend="${t == 'informacion'} ? 'active'" data-bs-toggle="tab"
+                        data-bs-target="#pane-informacion" type="button" role="tab">Información</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" th:classappend="${t == 'contacto'} ? 'active'" data-bs-toggle="tab"
+                        data-bs-target="#pane-contacto" type="button" role="tab">Contacto</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" th:classappend="${t == 'normas'} ? 'active'" data-bs-toggle="tab"
+                        data-bs-target="#pane-normas" type="button" role="tab">Normas</button>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<main class="container py-4 py-md-5 hw-rmain">
+    <div class="tab-content">
+
+        <!-- 1. DISPONIBILIDAD -->
+        <div class="tab-pane fade" th:classappend="${t == 'disponibilidad'} ? 'show active'"
+             id="pane-disponibilidad" role="tabpanel">
+
+            <div th:if="${aviso}" class="alert alert-warning" role="alert" th:text="${aviso}">Aviso</div>
+
+            <form id="formReserva" th:action="@{/reservas}" th:object="${form}" method="post"
+                  th:attr="data-abrir-modal=${#fields.hasErrors('*')},data-hoy=${hoy}" novalidate>
+                <input type="hidden" id="numHabitaciones" th:field="*{numHabitaciones}">
+                <input type="hidden" id="numHuespedes" th:field="*{numHuespedes}">
+
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                    <p class="mb-1 fw-semibold">Revisa los datos de tu reserva:</p>
+                    <ul class="mb-0">
+                        <li th:each="e : ${#fields.globalErrors()}" th:text="${e}">Error</li>
+                    </ul>
+                </div>
+                <div id="avisoFechas" class="alert alert-warning d-none" role="alert">
+                    La fecha de salida debe ser posterior a la fecha de entrada.
+                </div>
+
+                <!-- Barra de búsqueda superior -->
+                <div class="hw-panel mb-4">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-6 col-lg-3">
+                            <label class="form-label" for="fechaEntrada">Fecha de entrada</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                <input type="date" class="form-control" id="fechaEntrada" th:field="*{fechaEntrada}"
+                                       th:errorclass="is-invalid" th:min="${hoy}" required>
+                            </div>
+                            <div class="small text-danger mt-1" th:errors="*{fechaEntrada}">Error</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <label class="form-label" for="fechaSalida">Fecha de salida</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                <input type="date" class="form-control" id="fechaSalida" th:field="*{fechaSalida}"
+                                       th:errorclass="is-invalid" required>
+                            </div>
+                            <div class="small text-danger mt-1" th:errors="*{fechaSalida}">Error</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <span class="form-label d-block">Huéspedes y Habitaciones</span>
+                            <div class="dropdown">
+                                <button id="btnHuespedes" class="form-select text-start" type="button"
+                                        data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    <i class="bi bi-person me-1"></i><span id="txtHuespedes">1 habitación(es), 1 huésped(es)</span>
+                                </button>
+                                <div class="dropdown-menu p-3 hw-dd shadow">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span>Habitaciones:</span>
+                                        <div class="hw-stepper">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-paso="hab:-1" aria-label="Menos habitaciones">-</button>
+                                            <span id="cntHab" th:text="${form.numHabitaciones}">1</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-paso="hab:1" aria-label="Más habitaciones">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span>Huéspedes:</span>
+                                        <div class="hw-stepper">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-paso="hue:-1" aria-label="Menos huéspedes">-</button>
+                                            <span id="cntHue" th:text="${form.numHuespedes}">1</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-paso="hue:1" aria-label="Más huéspedes">+</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-hw btn-sm w-100" id="btnAplicar">Aplicar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <button type="button" id="btnPromo" class="btn btn-hw-linea w-100">
+                                <i class="bi bi-tag me-1"></i>Código promocional
+                            </button>
+                            <div id="cajaPromo" class="input-group d-none">
+                                <input type="text" class="form-control" id="codigoPromo" th:field="*{codigoPromo}" placeholder="Código" maxlength="30">
+                                <button type="button" id="cerrarPromo" class="btn btn-outline-secondary" aria-label="Quitar código">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle de Selección y Resumen -->
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <!-- Tarjeta interactiva de habitación -->
+                        <div class="hw-panel mb-4">
+                            <label class="form-label fw-semibold" for="tipoHabitacionId">Elige tu habitación</label>
+                            <select class="form-select mb-3" id="tipoHabitacionId" th:field="*{tipoHabitacionId}">
+                                <option th:each="t : ${tipos}" th:value="${t.id}"
+                                        th:text="${t.nombre} + ' — S/ ' + ${t.precioFmt} + ' / noche'"
+                                        th:attr="data-nombre=${t.nombre},data-precio=${t.precioNoche},data-cama=${t.cama},data-tamano=${t.tamanoM2},data-desc=${t.descripcion},data-img=${fotos[t.id]}">
+                                    Tipo
+                                </option>
+                            </select>
+
+                            <article class="hw-res-hab border-top pt-3">
+                                <img id="resHabImg" th:src="${fotos[form.tipoHabitacionId] != null ? fotos[form.tipoHabitacionId] : (tipos.isEmpty() ? '' : fotos[tipos[0].id])}"
+                                     alt="Habitación seleccionada">
+                                <div>
+                                    <h2 class="h4" id="resHabTitulo">Habitación Standard</h2>
+                                    <p class="mb-2">
+                                        <i class="bi bi-person me-1"></i>Capacidad: <span id="capHuespedes" th:text="${form.numHuespedes}">1</span> pers.
+                                        <span class="mx-2">|</span>
+                                        <i class="bi bi-moon-stars me-1"></i><span id="resHabCama">Cama king-size</span>
+                                        <span class="mx-2">|</span>
+                                        <i class="bi bi-aspect-ratio me-1"></i><span id="resHabTamano">20 m²</span>
+                                    </p>
+                                    <p class="small text-body-secondary mb-2" id="resHabDesc">Confort y descanso en el corazón de Huancayo.</p>
+                                    <div class="d-flex align-items-center gap-3 mt-2">
+                                        <span class="badge text-bg-warning fs-6" id="resHabPrecio">S/ 0.00</span>
+                                        <a class="small" th:href="@{/habitaciones}">Ver todas las habitaciones</a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+
+                        <!-- Servicios adicionales -->
+                        <div class="hw-panel mb-4" th:if="${!serviciosExtra.isEmpty()}">
+                            <h3 class="h5 mb-3"><i class="bi bi-stars me-2 text-warning"></i>Servicios Adicionales (Opcionales)</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6 hw-extra-item" th:each="s, iter : ${serviciosExtra}">
+                                    <div class="border rounded p-3 bg-light">
+                                        <div class="form-check">
+                                            <input type="hidden" th:name="'servicios[' + ${iter.index} + '].servicioId'" th:value="${s.id}">
+                                            <input type="checkbox" class="form-check-input hw-extra-check"
+                                                   th:id="'extra_' + ${s.id}"
+                                                   th:field="*{servicios[__${iter.index}__].seleccionado}"
+                                                   th:attr="data-precio=${s.precio}">
+                                            <label class="form-check-label fw-semibold" th:for="'extra_' + ${s.id}">
+                                                <span th:text="${s.nombre}">Servicio</span>
+                                                <span class="badge text-bg-secondary ms-1" th:text="'S/ ' + ${s.precio}">S/ 0.00</span>
+                                            </label>
+                                        </div>
+                                        <div class="mt-2 d-flex align-items-center gap-2">
+                                            <small class="text-body-secondary">Cantidad:</small>
+                                            <input type="number" class="form-control form-control-sm hw-extra-cant" style="width: 80px;"
+                                                   th:field="*{servicios[__${iter.index}__].cantidad}"
+                                                   min="1" max="99" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel de Resumen lateral -->
+                    <div class="col-lg-4">
+                        <aside class="hw-resumen shadow">
+                            <h3 class="h5 mb-3 text-white border-bottom border-light pb-2">Tu Estancia</h3>
+                            <div class="d-flex justify-content-between fw-semibold mb-3">
+                                <span id="resEntrada">—</span>
+                                <i class="bi bi-arrow-right"></i>
+                                <span id="resSalida">—</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total noches:</span>
+                                <strong id="resNoches">0</strong>
+                            </div>
+                            <p class="mb-3" id="resGuest">1 habitación(es), 1 huésped(es)</p>
+
+                            <div class="border-top border-light pt-3 mt-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span>Total Estimado:</span>
+                                    <strong class="h4 mb-0 text-warning" id="resTotalEstimado">S/ 0.00</strong>
+                                </div>
+                                <p class="small hw-resumen-nota mb-3">* El monto final se calcula en recepción sin recargos ocultos.</p>
+                            </div>
+
+                            <button type="button" id="btnReservar" class="btn btn-hw w-100 btn-lg shadow-sm">
+                                Reservar sin costo previo
+                            </button>
+                        </aside>
+                    </div>
+                </div>
+
+                <!-- Modal de Datos del Huésped -->
+                <div class="modal fade" id="modalHuesped" tabindex="-1" aria-labelledby="tituloHuesped" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content hw-modal shadow-lg">
+                            <div class="modal-header border-0 pb-0">
+                                <h2 class="modal-title h4" id="tituloHuesped">Tus datos para confirmar</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('*')}">
+                                    <p class="mb-1 fw-semibold">Por favor corrige los campos marcados:</p>
+                                    <ul class="mb-0">
+                                        <li th:each="e : ${#fields.allErrors()}" th:text="${e}">Error</li>
+                                    </ul>
+                                </div>
+
+                                <p class="small text-body-secondary mb-4">
+                                    La reserva no requiere pago por adelantado. La cancelación es gratuita hasta las 18:00 horas del día de llegada.
+                                </p>
+
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <label class="form-label" for="nombres">Nombres *</label>
+                                        <input type="text" class="form-control" id="nombres" th:field="*{nombres}"
+                                               th:errorclass="is-invalid" maxlength="80" placeholder="Ej. Juan Carlos" required>
+                                        <div class="invalid-feedback" th:errors="*{nombres}">Error</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label" for="apellidos">Apellidos *</label>
+                                        <input type="text" class="form-control" id="apellidos" th:field="*{apellidos}"
+                                               th:errorclass="is-invalid" maxlength="80" placeholder="Ej. Pérez García" required>
+                                        <div class="invalid-feedback" th:errors="*{apellidos}">Error</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="form-label" for="tipoDocumento">Documento *</label>
+                                        <select class="form-select" id="tipoDocumento" th:field="*{tipoDocumento}">
+                                            <option th:each="d : ${tiposDocumento}" th:value="${d}" th:text="${d.etiqueta}">DNI</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <label class="form-label" for="numeroDocumento">Número de Documento *</label>
+                                        <input type="text" class="form-control" id="numeroDocumento" th:field="*{numeroDocumento}"
+                                               th:errorclass="is-invalid" maxlength="20" placeholder="Número de documento" required>
+                                        <div class="invalid-feedback" th:errors="*{numeroDocumento}">Error</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label" for="email">Correo electrónico *</label>
+                                        <input type="email" class="form-control" id="email" th:field="*{email}"
+                                               th:errorclass="is-invalid" maxlength="120" placeholder="correo@ejemplo.com" required>
+                                        <div class="invalid-feedback" th:errors="*{email}">Error</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label" for="telefono">Teléfono / WhatsApp</label>
+                                        <input type="tel" class="form-control" id="telefono" th:field="*{telefono}"
+                                               th:errorclass="is-invalid" maxlength="30" placeholder="+51 987 654 321">
+                                        <div class="invalid-feedback" th:errors="*{telefono}">Error</div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <label class="form-label" for="pais">País de origen</label>
+                                        <input type="text" class="form-control" id="pais" th:field="*{pais}"
+                                               th:errorclass="is-invalid" maxlength="60" placeholder="Perú">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label" for="observaciones">Observaciones o peticiones especiales</label>
+                                        <textarea class="form-control" id="observaciones" th:field="*{observaciones}"
+                                                  rows="2" maxlength="500" placeholder="Hora estimada de llegada, etc."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 p-4 pt-0">
+                                <button type="button" class="btn btn-hw-linea rounded-pill px-4" data-bs-dismiss="modal">Volver</button>
+                                <button type="submit" class="btn btn-hw rounded-pill px-5">Confirmar reserva</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 2. INFORMACIÓN -->
+        <div class="tab-pane fade" th:classappend="${t == 'informacion'} ? 'show active'" id="pane-informacion" role="tabpanel">
+            <div class="hw-panel hw-texto">
+                <h2>Quiénes somos</h2>
+                <p>Hamay Wasi. Tu conexión con el Valle del Mantaro comienza aquí, ofreciendo confort y tradición en cada estancia en el corazón de Huancayo.</p>
+                <hr class="my-4">
+                <h2>Servicios Incluidos</h2>
+                <ul class="list-unstyled row row-cols-sm-2 g-2 mb-0">
+                    <li class="col"><i class="bi bi-check2 hw-check me-2"></i>Wi-Fi de alta velocidad en todo el hotel</li>
+                    <li class="col"><i class="bi bi-check2 hw-check me-2"></i>Recepción y asistencia 24 horas</li>
+                    <li class="col"><i class="bi bi-check2 hw-check me-2"></i>Servicio de limpieza diaria</li>
+                    <li class="col"><i class="bi bi-check2 hw-check me-2"></i>Información y orientación turística</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. CONTACTO -->
+        <div class="tab-pane fade" th:classappend="${t == 'contacto'} ? 'show active'" id="pane-contacto" role="tabpanel">
+            <div class="hw-panel p-0 overflow-hidden shadow-sm">
+                <iframe title="Mapa de Hamay Wasi" width="100%" height="320" style="border:0" allowfullscreen loading="lazy"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.81533423755!2d-75.21045152504958!3d-12.056214041708846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x910e964f487e41ad%3A0xc6c4f1c97a8e7343!2sReal%2C%20Huancayo%2012000!5e0!3m2!1ses-419!2spe!4v1700000000000"></iframe>
+                <div class="p-4 hw-texto">
+                    <h2>Contacto Directo</h2>
+                    <p class="mb-1"><i class="bi bi-geo-alt me-2 text-warning"></i>Calle Real 1250, Huancayo, Junín, 12000 Perú</p>
+                    <p class="mb-1"><i class="bi bi-telephone me-2 text-warning"></i>Teléfonos: 969 922 828 | 938 560 388</p>
+                    <p><i class="bi bi-envelope me-2 text-warning"></i>Correo: <a href="mailto:reservas@hamaywasi.com">reservas@hamaywasi.com</a></p>
+
+                    <h3 class="h5 mt-4">Envíanos un mensaje</h3>
+                    <div class="alert alert-success" role="status" th:if="${aviso}" th:text="${aviso}">Enviado</div>
+                    <form th:action="@{/contacto}" th:object="${contactoForm}" method="post" class="row g-3" novalidate>
+                        <div class="col-md-6">
+                            <label class="form-label" for="cNombre">Nombre *</label>
+                            <input id="cNombre" type="text" class="form-control" th:field="*{nombre}" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{nombre}">Error</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="cApellidos">Apellidos *</label>
+                            <input id="cApellidos" type="text" class="form-control" th:field="*{apellidos}" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{apellidos}">Error</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="cEmail">Correo electrónico *</label>
+                            <input id="cEmail" type="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{email}">Error</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="cTelefono">Teléfono</label>
+                            <input id="cTelefono" type="tel" class="form-control" th:field="*{telefono}" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:errors="*{telefono}">Error</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="cMensaje">Mensaje *</label>
+                            <textarea id="cMensaje" rows="4" class="form-control" th:field="*{mensaje}" th:errorclass="is-invalid" required></textarea>
+                            <div class="invalid-feedback" th:errors="*{mensaje}">Error</div>
+                        </div>
+                        <!-- Campo trampa antispam -->
+                        <div class="col-12" style="position:absolute;left:-9999px" aria-hidden="true">
+                            <label class="form-label" for="sitioTrampa">Sitio web</label>
+                            <input type="text" class="form-control" id="sitioTrampa" name="sitioTrampa" tabindex="-1" autocomplete="off">
+                        </div>
+                        <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-3">
+                            <p class="small text-body-secondary mb-0">Te responderemos a la brevedad posible.</p>
+                            <button type="submit" class="btn btn-hw rounded-pill px-5">Enviar mensaje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. NORMAS -->
+        <div class="tab-pane fade" th:classappend="${t == 'normas'} ? 'show active'" id="pane-normas" role="tabpanel">
+            <div class="hw-panel hw-texto">
+                <h2>Política de Cancelación</h2>
+                <p class="fw-semibold mb-1">Tarifa Estándar:</p>
+                <p>La cancelación es completamente gratuita hasta las 18:00 horas del día previsto de su llegada.</p>
+                <hr class="my-4">
+                <h2>Horarios de Estancia</h2>
+                <p class="mb-1"><strong>Check-in:</strong> A partir de las 13:00 hrs.</p>
+                <p class="mb-0"><strong>Check-out:</strong> Hasta las 11:00 hrs.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="hw-rfooter">
+    <div class="container d-flex flex-wrap justify-content-between gap-2 py-3">
+        <span>Hotel Hamay Wasi — Huancayo, Perú</span>
+        <span>Copyright © 2026 Hamay Wasi</span>
+    </div>
+</footer>
+
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>

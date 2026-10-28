@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Habitaciones & Suites')}"></head>
+<body>
+<header th:replace="~{fragments :: nav('habitaciones')}"></header>
+
+<main>
+    <section class="hw-pagehero">
+        <div class="container">
+            <h1>Habitaciones &amp; Suites</h1>
+            <p class="hw-lead mb-0">Descubre espacios únicos diseñados para tu confort en el Valle del Mantaro</p>
+        </div>
+    </section>
+
+    <div class="hw-barra">
+        <div class="container"><span class="hw-barra-texto">Nuestra Colección de Habitaciones</span></div>
+    </div>
+
+    <section class="hw-seccion pt-5">
+        <div class="container">
+            <article class="row g-4 g-lg-5 align-items-center hw-hab" th:each="t, it : ${tipos}"
+                     th:classappend="${it.odd} ? 'flex-lg-row-reverse'">
+                <div class="col-lg-7">
+                    <button type="button" class="hw-hab-img" data-bs-toggle="modal"
+                            th:attr="data-bs-target='#modalHab' + ${t.id}"
+                            th:aria-label="'Ver detalles de ' + ${t.nombre}">
+                        <img th:if="${fotos[t.id]}" th:src="${fotos[t.id]}" th:alt="${t.nombre}" loading="lazy">
+                    </button>
+                </div>
+                <div class="col-lg-5">
+                    <span class="badge text-bg-warning mb-2" th:text="'S/ ' + ${t.precioFmt} + ' por noche'">S/ 0.00</span>
+                    <h3 class="mb-3" th:text="${t.nombre}">Habitación</h3>
+                    <ul class="hw-lista list-unstyled mb-4">
+                        <li><strong>Cama:</strong> <span th:text="${t.cama}">Cama</span></li>
+                        <li><strong>Tamaño:</strong> <span th:text="${t.tamanoM2} + ' m²'">0 m²</span></li>
+                        <li><strong>Capacidad:</strong> <span th:text="${t.capacidad} + ' persona(s)'">2</span></li>
+                        <li th:if="${habitacionesTexto[t.nombre] != null and !habitacionesTexto[t.nombre].features().isEmpty()}">
+                            <span th:text="${habitacionesTexto[t.nombre].features().get(0)}">Servicio</span>
+                        </li>
+                    </ul>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-hw-linea rounded-pill px-4" data-bs-toggle="modal"
+                                th:attr="data-bs-target='#modalHab' + ${t.id}">Detalles</button>
+                        <a class="btn btn-hw rounded-pill px-4" th:href="@{/reservas(tipo=${t.id})}">Reservar</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<!-- Modales de detalles de habitación -->
+<div class="modal fade" th:each="t : ${tipos}" th:id="'modalHab' + ${t.id}" tabindex="-1"
+     th:attr="aria-labelledby='tituloHab' + ${t.id}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content hw-modal">
+            <button type="button" class="btn-close hw-modal-cerrar" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="hw-modal-img">
+                <img th:if="${fotos[t.id]}" th:src="${fotos[t.id]}" th:alt="${t.nombre}">
+                <span class="hw-etiqueta" th:text="'Tarifa: S/ ' + ${t.precioFmt} + ' / noche'">Standard</span>
+            </div>
+            <div class="modal-body p-4 p-md-5">
+                <h2 class="h3 mb-3" th:id="'tituloHab' + ${t.id}" th:text="${t.nombre}">Habitación</h2>
+                <p th:text="${t.descripcion}">Descripción</p>
+                <h4 class="h6 mt-4 mb-3">Comodidades y Servicios</h4>
+                <ul class="hw-lista list-unstyled row row-cols-sm-2 g-2 mb-4">
+                    <li class="col"><strong>Cama:</strong> <span th:text="${t.cama}">Cama</span></li>
+                    <li class="col"><strong>Tamaño:</strong> <span th:text="${t.tamanoM2} + ' m²'">Tamaño</span></li>
+                    <li class="col"><strong>Capacidad máx.:</strong> <span th:text="${t.capacidad} + ' personas'">2</span></li>
+                    <li class="col" th:if="${habitacionesTexto[t.nombre] != null}"
+                        th:each="f : ${habitacionesTexto[t.nombre].features()}" th:text="${f}">Servicio</li>
+                </ul>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4 pt-3 border-top">
+                    <div>
+                        <span class="small text-body-secondary d-block">Precio por noche</span>
+                        <strong class="h4 mb-0 text-success" th:text="'S/ ' + ${t.precioFmt}">S/ 0.00</strong>
+                    </div>
+                    <a class="btn btn-hw rounded-pill px-4" th:href="@{/reservas(tipo=${t.id})}">Reservar Esta Habitación</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<a th:replace="~{fragments :: whatsapp}"></a>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>

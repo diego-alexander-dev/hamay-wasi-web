@@ -1,0 +1,259 @@
+﻿/* ==========================================================================
+   Hamay Wasi - estilos (sobre Bootstrap 5.3)
+   Paleta tomada del logotipo (bronce y cacao) + verde laguna del Valle.
+   Motivo: la "terraza" escalonada, usada solo en el borde del hero y en la foto de "Nuestra esencia".
+   ========================================================================== */
+
+:root {
+    --laguna: #15403d;
+    --laguna-900: #0d2624;
+    --cacao: #2a1b0e;
+    --bronce: #b8862f;
+    --bronce-claro: #e0bc6c;
+    --bronce-texto: #7a5514;
+    --piedra: #ecebe3;
+    --lino: #faf9f4;
+    --linea: #d3d0c1;
+    --paso: 5.5rem;
+    --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+
+    --bs-body-font-family: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --bs-body-color: var(--cacao);
+    --bs-body-bg: var(--piedra);
+    --bs-link-color: var(--bronce-texto);
+    --bs-link-color-rgb: 122, 85, 20;
+    --bs-link-hover-color: var(--cacao);
+    --bs-border-color: var(--linea);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+body { line-height: 1.65; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; line-height: 1.15; }
+:focus-visible { outline: 3px solid var(--bronce); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ---------- Botones ---------- */
+.btn-hw {
+    --bs-btn-color: var(--cacao); --bs-btn-bg: var(--bronce-claro); --bs-btn-border-color: var(--bronce-claro);
+    --bs-btn-hover-color: var(--cacao); --bs-btn-hover-bg: #f0d28e; --bs-btn-hover-border-color: #f0d28e;
+    --bs-btn-active-color: var(--cacao); --bs-btn-active-bg: #f0d28e; --bs-btn-active-border-color: #f0d28e;
+    font-weight: 600; letter-spacing: 0.02em;
+}
+.btn-hw-oscuro {
+    --bs-btn-color: var(--lino); --bs-btn-bg: var(--laguna); --bs-btn-border-color: var(--laguna);
+    --bs-btn-hover-color: var(--lino); --bs-btn-hover-bg: var(--laguna-900); --bs-btn-hover-border-color: var(--laguna-900);
+    --bs-btn-active-color: var(--lino); --bs-btn-active-bg: var(--laguna-900); --bs-btn-active-border-color: var(--laguna-900);
+    font-weight: 600;
+}
+.btn-hw-linea {
+    --bs-btn-color: var(--cacao); --bs-btn-bg: transparent; --bs-btn-border-color: var(--cacao);
+    --bs-btn-hover-color: var(--lino); --bs-btn-hover-bg: var(--cacao); --bs-btn-hover-border-color: var(--cacao);
+    --bs-btn-active-color: var(--lino); --bs-btn-active-bg: var(--cacao); --bs-btn-active-border-color: var(--cacao);
+    font-weight: 600;
+}
+.btn-hw-linea-claro {
+    --bs-btn-color: var(--lino); --bs-btn-bg: transparent; --bs-btn-border-color: rgba(250, 249, 244, 0.6);
+    --bs-btn-hover-color: var(--cacao); --bs-btn-hover-bg: var(--lino); --bs-btn-hover-border-color: var(--lino);
+    --bs-btn-active-color: var(--cacao); --bs-btn-active-bg: var(--lino); --bs-btn-active-border-color: var(--lino);
+    font-weight: 600;
+}
+
+/* ---------- Encabezado flotante ---------- */
+.hw-header { position: fixed; inset: 0 0 auto 0; z-index: 1030; padding: 0.9rem 1rem 0; pointer-events: none; }
+.hw-nav {
+    pointer-events: auto; position: relative; max-width: 1320px; margin: 0 auto;
+    background: rgba(13, 38, 36, 0.92); backdrop-filter: blur(10px);
+    border: 1px solid rgba(224, 188, 108, 0.45); border-radius: 2rem;
+    padding: 0.45rem 0.9rem 0.45rem 5rem; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    transition: padding 0.3s ease;
+}
+.hw-placa {
+    position: absolute; left: 1rem; top: 0.35rem; width: 3.4rem; background: var(--lino);
+    border-bottom: 3px solid var(--bronce); border-radius: 0 0 0.35rem 0.35rem;
+    padding: 0.2rem; box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3); transition: width 0.35s ease;
+}
+.hw-placa img { display: block; width: 100%; height: auto; }
+.hw-nav .nav-link {
+    color: rgba(250, 249, 244, 0.86); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em;
+    padding: 0.5rem 0.6rem; border-bottom: 2px solid transparent;
+}
+.hw-nav .nav-link:hover, .hw-nav .nav-link:focus-visible { color: var(--bronce-claro); }
+.hw-nav .nav-link.active { color: var(--lino); border-bottom-color: var(--bronce-claro); }
+.hw-btn-nav { font-size: 0.74rem; padding-top: 0.55rem; padding-bottom: 0.55rem; }
+
+@media (min-width: 1200px) {
+    .hw-nav { padding-left: 8.6rem; }
+    .hw-placa { width: 6.2rem; }
+    .hw-scroll .hw-nav { padding-left: 5rem; }
+    .hw-scroll .hw-placa { width: 3.4rem; }
+}
+
+/* ---------- Hero ---------- */
+.hw-hero {
+    position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: flex-end;
+    color: var(--lino); background: var(--laguna-900); overflow: hidden;
+}
+.hw-hero .carousel { position: absolute; inset: 0; }
+.hw-hero .carousel-inner, .hw-hero .carousel-item { height: 100%; }
+.hw-hero .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+.hw-hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(90deg, rgba(13, 38, 36, 0.88) 0%, rgba(13, 38, 36, 0.55) 48%, rgba(13, 38, 36, 0.12) 100%),
+                linear-gradient(0deg, rgba(13, 38, 36, 0.65), transparent 40%);
+}
+/* Borde en terrazas: sube escalon a escalon hacia la derecha */
+.hw-hero::after {
+    content: ''; position: absolute; z-index: 2; left: 0; right: 0; bottom: -1px; height: var(--paso);
+    background: var(--piedra);
+    clip-path: polygon(0 100%, 0 72%, 16.66% 72%, 16.66% 56%, 33.33% 56%, 33.33% 40%, 50% 40%, 50% 26%,
+                       66.66% 26%, 66.66% 12%, 83.33% 12%, 83.33% 0, 100% 0, 100% 100%);
+}
+.hw-hero-contenido { position: relative; z-index: 3; padding-top: 9rem; padding-bottom: calc(var(--paso) + 2.5rem); }
+.hw-hero h1 { font-size: clamp(2.6rem, 6vw, 4.9rem); font-weight: 350; max-width: 15ch; margin-bottom: 1.25rem; }
+.hw-lead { font-size: 1.15rem; max-width: 34rem; }
+.hw-hero .hw-lead { margin-bottom: 2rem; }
+
+.hw-sub { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--bronce-texto); margin-bottom: 0.6rem; }
+.hw-sub-claro { color: var(--bronce-claro); }
+
+.hw-hero-btn {
+    display: inline-flex; align-items: center; gap: 0.9rem; background: var(--lino); color: var(--cacao);
+    text-decoration: none; padding: 0.5rem 1.5rem 0.5rem 0.5rem; border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+}
+.hw-hero-btn:hover { background: #fff; color: var(--cacao); }
+.hw-hero-btn small { color: #5c4a35; }
+.hw-hero-chip { display: grid; place-items: center; width: 3.4rem; height: 3.4rem; border-radius: 50%; background: #fff; border: 1px solid var(--linea); flex: none; }
+.hw-hero-chip img { width: 2.6rem; height: 2.6rem; object-fit: contain; }
+
+/* ---------- Secciones ---------- */
+.hw-seccion { padding: 5.5rem 0; }
+.hw-h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 350; }
+
+/* Habitaciones (inicio) */
+.hw-cat { display: block; color: inherit; text-decoration: none; }
+.hw-cat-img { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--laguna); border-radius: 0.25rem; }
+.hw-cat-img img { width: 100%; height: 100%; object-fit: cover; }
+.hw-etiqueta { position: absolute; left: 0; bottom: 0; background: var(--lino); color: var(--cacao); font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.85rem; }
+.hw-cat h3 { font-size: 1.5rem; margin: 1.1rem 0 0.5rem; padding-top: 0.85rem; border-top: 2px solid var(--bronce); }
+.hw-cat:hover h3 { color: var(--bronce-texto); }
+
+/* Tesoros del Valle (acordeon horizontal) */
+.hw-destino { background: var(--laguna-900); color: var(--lino); }
+.hw-tesoros { display: flex; gap: 0.75rem; height: 32rem; }
+.hw-tesoro {
+    position: relative; flex: 1; display: flex; align-items: flex-end; padding: 1.5rem; overflow: hidden; cursor: pointer;
+    background-color: var(--laguna); background-size: cover; background-position: center;
+    border: 1px solid rgba(224, 188, 108, 0.25); border-radius: 1.25rem; transition: flex 0.7s ease;
+}
+.hw-tesoro::before { content: ''; position: absolute; inset: 0; background: rgba(13, 38, 36, 0.6); }
+.hw-tesoro.activo::before { background: linear-gradient(0deg, rgba(13, 38, 36, 0.94), rgba(13, 38, 36, 0.35) 60%, transparent); }
+.hw-tesoro > div { position: relative; }
+.hw-tesoro h3 { font-size: 1.35rem; margin: 0; }
+.hw-tesoro p, .hw-tesoro .hw-explorar { display: none; }
+.hw-tesoro p { max-width: 28rem; margin: 0.6rem 0 0; }
+.hw-tesoro.activo p { display: block; }
+.hw-tesoro.activo .hw-explorar { display: inline-block; }
+.hw-tesoros.hw-hay-activo .hw-tesoro { flex: 0.5; }
+.hw-tesoros.hw-hay-activo .hw-tesoro.activo { flex: 3; }
+.hw-tesoros.hw-hay-activo .hw-tesoro:not(.activo) h3 { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 1.1rem; }
+
+@media (max-width: 767.98px) {
+    .hw-tesoros { flex-direction: column; height: auto; }
+    .hw-tesoro, .hw-tesoros.hw-hay-activo .hw-tesoro, .hw-tesoros.hw-hay-activo .hw-tesoro.activo { flex: none; min-height: 6rem; transition: min-height 0.5s ease; }
+    .hw-tesoros.hw-hay-activo .hw-tesoro.activo { min-height: 20rem; }
+    .hw-tesoros.hw-hay-activo .hw-tesoro:not(.activo) h3 { writing-mode: horizontal-tb; transform: none; }
+}
+
+/* Servicios */
+.hw-sticky-titulo { top: 7rem; }
+.hw-linea { width: 4.5rem; height: 3px; background: var(--bronce); margin-top: 1.5rem; }
+.hw-servicio { display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem 0; border-top: 1px solid var(--linea); }
+.hw-servicio:last-child { border-bottom: 1px solid var(--linea); }
+.hw-servicio img { width: 9.5rem; height: 7rem; object-fit: cover; flex: none; background: var(--laguna); border-radius: 0.25rem; }
+.hw-servicio h3 { font-size: 1.4rem; margin-bottom: 0.35rem; }
+@media (max-width: 575.98px) { .hw-servicio { flex-direction: column; align-items: flex-start; } .hw-servicio img { width: 100%; height: 11rem; } }
+
+/* Nuestra esencia */
+.hw-esencia { background: var(--lino); }
+.hw-marco img {
+    display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--laguna);
+    clip-path: polygon(0 0, 66% 0, 66% 7%, 77% 7%, 77% 14%, 88% 14%, 88% 21%, 100% 21%, 100% 100%, 0 100%);
+}
+
+/* Llamado a la accion */
+.hw-cta { background: var(--laguna); color: var(--lino); }
+.hw-wanka { font-size: clamp(2rem, 5vw, 3.2rem); font-style: italic; font-weight: 300; color: var(--bronce-claro); margin-bottom: 1.25rem; }
+.hw-link-claro { color: var(--bronce-claro); }
+.hw-link-claro:hover { color: var(--lino); }
+
+/* Pie de pagina */
+.hw-footer { background: var(--cacao); color: rgba(250, 249, 244, 0.85); }
+.hw-footer h4 { font-size: 1.2rem; color: var(--bronce-claro); margin-bottom: 1rem; }
+.hw-footer a { color: var(--bronce-claro); }
+.hw-footer a:hover { color: var(--lino); }
+.hw-footer-base { border-top: 1px solid rgba(224, 188, 108, 0.25); font-size: 0.9rem; }
+.hw-social { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 1px solid rgba(224, 188, 108, 0.5); border-radius: 50%; text-decoration: none; }
+.hw-social:hover { background: var(--bronce-claro); color: var(--cacao) !important; }
+
+.hw-wa {
+    position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1040; display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #25d366; color: #06280f; font-weight: 600; text-decoration: none; padding: 0.7rem 1.2rem; border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+.hw-wa:hover { background: #3be07a; color: #06280f; }
+.hw-wa i { font-size: 1.3rem; }
+@media (max-width: 575.98px) { .hw-wa span { display: none; } .hw-wa { padding: 0.8rem; } }
+
+/* ---------- Pagina de habitaciones ---------- */
+.hw-pagehero {
+    position: relative; padding: 10rem 0 4.5rem; color: var(--lino);
+    background: linear-gradient(90deg, rgba(13, 38, 36, 0.92), rgba(13, 38, 36, 0.6)),
+                url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1920') center / cover, var(--laguna-900);
+}
+.hw-pagehero h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 350; margin-bottom: 0.75rem; }
+.hw-barra { position: sticky; top: 4.9rem; z-index: 1000; background: var(--lino); border-bottom: 1px solid var(--linea); padding: 0.75rem 0; }
+.hw-barra-texto { font-family: var(--font-display); font-size: 1.15rem; }
+.hw-hab { margin-bottom: 4rem; }
+.hw-hab-img { display: block; width: 100%; padding: 0; border: 0; overflow: hidden; background: var(--laguna); aspect-ratio: 16 / 10; cursor: zoom-in; border-radius: 0.25rem; }
+.hw-hab-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.hw-hab-img:hover img { transform: scale(1.04); }
+.hw-lista li { position: relative; padding-left: 1.4rem; margin-bottom: 0.4rem; }
+.hw-lista li::before { content: ''; position: absolute; left: 0.15rem; top: 0.6em; width: 0.45rem; height: 0.45rem; background: var(--bronce); transform: rotate(45deg); }
+.hw-modal { border: 0; border-radius: 0.5rem; overflow: hidden; background: var(--lino); }
+.hw-modal-cerrar { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 5; background-color: #fff; opacity: 1; padding: 0.6rem; border-radius: 50%; }
+.hw-modal-img { position: relative; height: 16rem; background: var(--laguna); }
+.hw-modal-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Reservas ---------- */
+.hw-reserva { background: var(--lino); min-height: 100vh; display: flex; flex-direction: column; }
+.hw-rmain { flex: 1; max-width: 1100px; }
+.hw-rtop { background: var(--lino); border-bottom: 1px solid var(--linea); }
+.hw-rmarca img { height: 3.4rem; width: auto; }
+.hw-estrellas { color: var(--bronce); letter-spacing: 0.15em; }
+.hw-rtabs { --bs-nav-underline-link-active-color: var(--cacao); --bs-nav-link-color: #5c4a35; --bs-nav-link-hover-color: var(--cacao); }
+.hw-rtabs .nav-link.active { border-bottom-color: var(--bronce); }
+.hw-panel { background: #fff; border: 1px solid var(--linea); border-radius: 0.5rem; padding: 1.25rem; }
+.hw-panel .form-control, .hw-panel .form-select, .hw-panel .input-group-text { border-color: #bdb9a7; }
+.hw-res-hab { display: flex; gap: 1.5rem; }
+.hw-res-hab img { width: 15rem; max-width: 40%; height: 11rem; object-fit: cover; border-radius: 0.25rem; background: var(--laguna); flex: none; }
+@media (max-width: 575.98px) { .hw-res-hab { flex-direction: column; } .hw-res-hab img { width: 100%; max-width: none; } }
+.hw-resumen { background: var(--laguna); color: var(--lino); border-radius: 0.5rem; padding: 1.5rem; position: sticky; top: 1rem; }
+.hw-resumen-nota { color: var(--bronce-claro); }
+.hw-dd { min-width: 17rem; }
+.hw-stepper { display: inline-flex; align-items: center; gap: 0.75rem; }
+.hw-stepper span { min-width: 1.5rem; text-align: center; font-weight: 600; }
+.hw-texto h2 { font-size: 1.6rem; margin-bottom: 0.75rem; }
+.hw-check { color: var(--bronce-texto); }
+.hw-rfooter { border-top: 1px solid var(--linea); font-size: 0.9rem; background: var(--lino); }
+
+/* Confirmacion */
+.hw-confirmacion { padding-top: 9rem; }
+.hw-codigo { display: inline-block; font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: 0.08em; padding: 0.4rem 1.5rem; border: 2px solid var(--bronce); background: var(--lino); }
+.hw-conf-img { border-radius: 0.25rem; }
+.hw-dl dt { font-weight: 500; color: #5c4a35; }
+@media print { .hw-header, .hw-footer, .hw-wa, .btn { display: none !important; } .hw-confirmacion { padding-top: 2rem; } }

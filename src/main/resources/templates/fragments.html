@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(titulo)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' | Hamay Wasi'">Hamay Wasi</title>
+    <link rel="icon" th:href="@{/img/logo-hamay.png}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/hamay.css}">
+</head>
+
+<body>
+
+<!-- Navegacion principal: diseño elegante flotante -->
+<header class="hw-header" th:fragment="nav(activa)">
+    <nav class="navbar navbar-expand-xl hw-nav" data-bs-theme="dark" aria-label="Principal">
+        <a class="hw-placa" th:href="@{/}" aria-label="Hamay Wasi, inicio">
+            <img th:src="@{/img/logo-hamay.png}" alt="Hamay Wasi">
+        </a>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false"
+                aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav mx-auto mb-2 mb-xl-0">
+                <li class="nav-item"><a class="nav-link" th:classappend="${activa == 'inicio'} ? 'active'" th:href="@{/}">INICIO</a></li>
+                <li class="nav-item"><a class="nav-link" th:classappend="${activa == 'habitaciones'} ? 'active'" th:href="@{/habitaciones}">HABITACIONES &amp; SUITES</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/#habitaciones}">LAS TERRAZAS</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/reservas(tab='contacto')}">EVENTOS</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/#destino}">DESTINO HUANCAYO</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/#servicios}">SERVICIOS</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/reservas(tab='contacto')}">CONTACTO</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/#esencia}">FOTOS</a></li>
+            </ul>
+            <a class="btn btn-hw rounded-pill px-4 hw-btn-nav" th:href="@{/reservas}">RESERVAR AHORA</a>
+        </div>
+    </nav>
+</header>
+
+<footer class="hw-footer" th:fragment="footer">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-md-4">
+                <h4>Ubicación</h4>
+                <p class="mb-2">
+                    <i class="bi bi-geo-alt me-1"></i> Centro de la Ciudad<br>
+                    <strong>Real 1250</strong><br>
+                    Huancayo, Junín - Perú
+                </p>
+                <a href="https://maps.google.com/?q=Real+1250+Huancayo" target="_blank" rel="noopener noreferrer">VER EN MAPA</a>
+            </div>
+            <div class="col-md-4">
+                <h4>Atención al cliente</h4>
+                <p class="mb-1"><i class="bi bi-telephone me-1"></i> +51 969 922 828 | 938 560 388</p>
+                <p class="mb-3"><i class="bi bi-envelope me-1"></i> reservas@hamaywasi.com</p>
+                <p class="mb-1"><i class="bi bi-clock me-1"></i> Recepción: 24 Horas</p>
+                <p class="mb-0"><i class="bi bi-clock me-1"></i> Reservas: 8:00 AM - 10:00 PM</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Síguenos</h4>
+                <p>Descubre más de la experiencia en Huancayo y el Valle del Mantaro.</p>
+                <div class="d-flex gap-2">
+                    <a class="hw-social" href="#" aria-label="Sitio web"><i class="bi bi-globe"></i></a>
+                    <a class="hw-social" href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a class="hw-social" href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a class="hw-social" href="#" aria-label="Reseñas"><i class="bi bi-star"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="hw-footer-base d-flex flex-column flex-md-row justify-content-between gap-2 mt-5 pt-4">
+            <p class="mb-0">© 2026 Hamay Wasi. Todos los derechos reservados.</p>
+            <p class="mb-0">
+                Diseñado con pasión en Huancayo.
+                <span class="mx-2">|</span>
+                <a th:href="@{/contacto}">Libro de reclamaciones</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<a th:fragment="whatsapp" class="hw-wa" href="https://wa.me/51969922828" target="_blank" rel="noopener noreferrer">
+    <i class="bi bi-whatsapp"></i> <span>WhatsApp</span>
+</a>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/hamay.js}"></script>
+</th:block>
+
+</body>
+</html>

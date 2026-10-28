@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Página no disponible')}"></head>
+<body>
+<header th:replace="~{fragments :: nav('')}"></header>
+<main class="hw-seccion hw-confirmacion">
+    <div class="container">
+        <p class="hw-sub" th:text="'Error ' + (${status} ?: '404')">Error 404</p>
+        <h1 class="hw-h2">No pudimos mostrar esta página</h1>
+        <p th:text="${message} ?: 'La dirección no existe o ya no está disponible.'">Mensaje</p>
+        <a class="btn btn-hw rounded-pill px-4" th:href="@{/}">Volver al inicio</a>
+    </div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>
