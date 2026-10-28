@@ -2,8 +2,6 @@ package com.hamaywasi.modelo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,10 +29,6 @@ public class Habitacion {
     @JoinColumn(name = "tipo_id", nullable = false)
     private TipoHabitacion tipo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado", nullable = false, length = 15)
-    private EstadoHabitacion estado = EstadoHabitacion.DISPONIBLE;
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -46,7 +40,4 @@ public class Habitacion {
 
     public TipoHabitacion getTipo() { return tipo; }
     public void setTipo(TipoHabitacion tipo) { this.tipo = tipo; }
-
-    public EstadoHabitacion getEstado() { return estado; }
-    public void setEstado(EstadoHabitacion estado) { this.estado = estado; }
 }

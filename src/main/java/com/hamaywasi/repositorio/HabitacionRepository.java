@@ -1,6 +1,5 @@
 package com.hamaywasi.repositorio;
 
-import com.hamaywasi.modelo.EstadoHabitacion;
 import com.hamaywasi.modelo.Habitacion;
 import com.hamaywasi.modelo.HabitacionDisponible;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -38,7 +37,4 @@ public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 
     @EntityGraph(attributePaths = "tipo")
     Optional<Habitacion> findByNumero(String numero);
-
-    @EntityGraph(attributePaths = "tipo")
-    List<Habitacion> findByEstadoOrderByPisoAscNumeroAsc(EstadoHabitacion estado);
 }

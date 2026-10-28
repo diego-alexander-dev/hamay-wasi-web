@@ -181,9 +181,6 @@ public class ReservaService {
                     + reserva.getEstado().getEtiqueta() + " a " + destino.getEtiqueta());
         }
         reserva.setEstado(destino);
-        if (destino == EstadoReserva.CANCELADA) {
-            liberarHabitaciones(reserva);
-        }
         return cargarCompleto(reservaRepo.saveAndFlush(reserva));
     }
 
@@ -285,15 +282,7 @@ public class ReservaService {
         }
     }
 
-    // libera habitaciones si se cancela
-    private void liberarHabitaciones(Reserva reserva) {
-        for (ReservaHabitacion linea : reserva.getHabitaciones()) {
-            Habitacion habitacion = linea.getHabitacion();
-            if (habitacion != null) {
-                habitacion.setEstado(com.hamaywasi.modelo.EstadoHabitacion.DISPONIBLE);
-            }
-        }
-    }
+
 
     // carga datos de la reserva
     private Reserva cargarCompleto(Reserva reserva) {

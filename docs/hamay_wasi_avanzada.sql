@@ -29,12 +29,9 @@ CREATE TABLE habitaciones (
     id       BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     numero   VARCHAR(10) NOT NULL UNIQUE,
     piso     SMALLINT    NOT NULL,
-    tipo_id  BIGINT      NOT NULL REFERENCES tipos_habitacion(id),
-    estado   VARCHAR(15) NOT NULL DEFAULT 'DISPONIBLE',
-    CONSTRAINT ck_hab_estado CHECK (estado IN ('DISPONIBLE','OCUPADA','LIMPIEZA','MANTENIMIENTO'))
+    tipo_id  BIGINT      NOT NULL REFERENCES tipos_habitacion(id)
 );
 CREATE INDEX idx_hab_tipo   ON habitaciones (tipo_id);
-CREATE INDEX idx_hab_estado ON habitaciones (estado);
 
 CREATE TABLE servicios (
     id      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -251,8 +248,7 @@ LANGUAGE sql STABLE AS $$
     SELECT h.id, h.numero, h.piso, t.nombre, t.precio_noche
       FROM habitaciones h
       JOIN tipos_habitacion t ON t.id = h.tipo_id
-     WHERE h.estado <> 'MANTENIMIENTO'
-       AND t.activo = TRUE
+     WHERE t.activo = TRUE
        AND (p_tipo IS NULL OR h.tipo_id = p_tipo)
        AND NOT EXISTS (
             SELECT 1
