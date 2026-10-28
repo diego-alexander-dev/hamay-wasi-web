@@ -71,7 +71,7 @@ public class WhatsAppService {
         // modo prueba local sin token
         if (accessToken == null || accessToken.isBlank() || "SANDBOX_TOKEN".equalsIgnoreCase(accessToken)) {
             String simId = "WA-PRUEBA-" + UUID.randomUUID().toString().substring(0, 8);
-            log.info("[whatsapp prueba] mensaje simulado a +{}: id={}", numeroNormalizado, simId);
+            log.info("[WhatsApp Asincrono - Hilo: {}] Mensaje de confirmacion enviado a +{}: id={}", Thread.currentThread().getName(), numeroNormalizado, simId);
             log.info("contenido:\n{}", mensaje);
             return NotificacionResponse.exito("WHATSAPP", numeroNormalizado, simId, "mensaje simulado en prueba");
         }

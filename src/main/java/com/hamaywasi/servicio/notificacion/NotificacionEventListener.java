@@ -23,6 +23,8 @@ public class NotificacionEventListener {
     @Async
     @EventListener
     public void manejarReservaConfirmada(ReservaConfirmadaEvent evento) {
+        log.info("Evento ReservaConfirmadaEvent recibido en segundo plano en hilo [{}] para reserva {}",
+                Thread.currentThread().getName(), evento.reserva().getCodigo());
         try {
             whatsAppService.enviarConfirmacionReserva(evento.reserva());
         } catch (Exception e) {

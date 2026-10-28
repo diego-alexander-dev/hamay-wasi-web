@@ -121,8 +121,9 @@ public class ReservaService {
         Reserva guardada = reservaRepo.findById(reserva.getId())
                 .orElseThrow(() -> new NoSuchElementException("La reserva no se pudo guardar"));
         cargarCompleto(guardada);
-        log.info("Reserva {} creada: {} habitacion(es) del tipo {}",
+        log.info("Solicitud procesada: Reserva {} creada ({} habitacion(es) del tipo {})",
                 guardada.getCodigo(), numHabitaciones, tipo.getNombre());
+        log.info("Publicando evento ReservaConfirmadaEvent para la reserva {}", guardada.getCodigo());
         eventPublisher.publishEvent(new ReservaConfirmadaEvent(guardada));
         return guardada;
     }
