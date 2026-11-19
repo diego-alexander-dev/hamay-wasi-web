@@ -47,7 +47,7 @@ El esquema contiene:
    *(O en Windows con el wrapper: `mvnw.cmd spring-boot:run`)*
 
 3. Abrir en el navegador:
-   **http://localhost:8080**
+   **http://localhost:9090**
 
 ---
 
@@ -68,7 +68,7 @@ El esquema contiene:
 
 ```
 src/main/java/com/hamaywasi/
-├── HamayWasiApplication.java       Clase principal de inicio
+├── HamayWasiWebApplication.java   Clase principal de inicio
 ├── catalogo/                       Textos y recursos multimedia del sitio
 ├── dto/                            DTOs para solicitudes y respuestas REST
 ├── evento/                         Eventos de dominio (confirmación de reserva)

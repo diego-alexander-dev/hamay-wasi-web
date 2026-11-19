@@ -26,7 +26,7 @@ public final class Contenido {
     }
 
     public static final List<String> HERO_IMAGENES = List.of(
-            "https://images.unsplash.com/photo-1551882547-ff40c0d5e9af?q=80&w=1920",
+            "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1920",
             "https://images.unsplash.com/photo-1562790351-d273a961e0e9?q=80&w=1920",
             "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1920");
 

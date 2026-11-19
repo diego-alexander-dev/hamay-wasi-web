@@ -34,7 +34,7 @@
 <main class="container py-4 py-md-5 hw-rmain">
     <div class="tab-content">
 
-        <!-- 1. DISPONIBILIDAD -->
+        <!-- disponibilidad -->
         <div class="tab-pane fade" th:classappend="${t == 'disponibilidad'} ? 'show active'"
              id="pane-disponibilidad" role="tabpanel">
 
@@ -55,7 +55,7 @@
                     La fecha de salida debe ser posterior a la fecha de entrada.
                 </div>
 
-                <!-- Barra de búsqueda superior -->
+                <!-- busqueda -->
                 <div class="hw-panel mb-4">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-6 col-lg-3">
@@ -116,10 +116,10 @@
                     </div>
                 </div>
 
-                <!-- Detalle de Selección y Resumen -->
+                <!-- seleccion -->
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <!-- Tarjeta interactiva de habitación -->
+                        <!-- habitacion -->
                         <div class="hw-panel mb-4">
                             <label class="form-label fw-semibold" for="tipoHabitacionId">Elige tu habitación</label>
                             <select class="form-select mb-3" id="tipoHabitacionId" th:field="*{tipoHabitacionId}">
@@ -151,7 +151,7 @@
                             </article>
                         </div>
 
-                        <!-- Servicios adicionales -->
+                        <!-- servicios adicionales -->
                         <div class="hw-panel mb-4" th:if="${!serviciosExtra.isEmpty()}">
                             <h3 class="h5 mb-3"><i class="bi bi-stars me-2 text-warning"></i>Servicios Adicionales (Opcionales)</h3>
                             <div class="row g-3">
@@ -180,7 +180,7 @@
                         </div>
                     </div>
 
-                    <!-- Panel de Resumen lateral -->
+                    <!-- resumen -->
                     <div class="col-lg-4">
                         <aside class="hw-resumen shadow">
                             <h3 class="h5 mb-3 text-white border-bottom border-light pb-2">Tu Estancia</h3>
@@ -210,7 +210,7 @@
                     </div>
                 </div>
 
-                <!-- Modal de Datos del Huésped -->
+                <!-- datos huesped -->
                 <div class="modal fade" id="modalHuesped" tabindex="-1" aria-labelledby="tituloHuesped" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content hw-modal shadow-lg">
@@ -289,7 +289,7 @@
             </form>
         </div>
 
-        <!-- 2. INFORMACIÓN -->
+        <!-- informacion -->
         <div class="tab-pane fade" th:classappend="${t == 'informacion'} ? 'show active'" id="pane-informacion" role="tabpanel">
             <div class="hw-panel hw-texto">
                 <h2>Quiénes somos</h2>
@@ -305,7 +305,7 @@
             </div>
         </div>
 
-        <!-- 3. CONTACTO -->
+        <!-- contacto -->
         <div class="tab-pane fade" th:classappend="${t == 'contacto'} ? 'show active'" id="pane-contacto" role="tabpanel">
             <div class="hw-panel p-0 overflow-hidden shadow-sm">
                 <iframe title="Mapa de Hamay Wasi" width="100%" height="320" style="border:0" allowfullscreen loading="lazy"
@@ -344,7 +344,7 @@
                             <textarea id="cMensaje" rows="4" class="form-control" th:field="*{mensaje}" th:errorclass="is-invalid" required></textarea>
                             <div class="invalid-feedback" th:errors="*{mensaje}">Error</div>
                         </div>
-                        <!-- Campo trampa antispam -->
+                        <!-- antispam -->
                         <div class="col-12" style="position:absolute;left:-9999px" aria-hidden="true">
                             <label class="form-label" for="sitioTrampa">Sitio web</label>
                             <input type="text" class="form-control" id="sitioTrampa" name="sitioTrampa" tabindex="-1" autocomplete="off">
@@ -358,7 +358,7 @@
             </div>
         </div>
 
-        <!-- 4. NORMAS -->
+        <!-- normas -->
         <div class="tab-pane fade" th:classappend="${t == 'normas'} ? 'show active'" id="pane-normas" role="tabpanel">
             <div class="hw-panel hw-texto">
                 <h2>Política de Cancelación</h2>

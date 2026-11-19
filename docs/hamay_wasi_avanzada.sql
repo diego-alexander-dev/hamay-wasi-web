@@ -1,15 +1,7 @@
-﻿-- =====================================================================
--- Hamay Wasi - Esquema PostgreSQL (fuente de verdad del proyecto)
--- Base: hamay_wasi_avanzada
--- Ejecutar una sola vez, con la base vacia:
---   psql -U postgres -d hamay_wasi_avanzada -f docs/hamay_wasi_avanzada.sql
--- Hibernate usa ddl-auto=validate: NUNCA crea ni modifica tablas.
--- =====================================================================
+-- esquema postgresql
+-- base: hamay_wasi_avanzada
 
--- ---------------------------------------------------------------------
--- 1. CATALOGOS
--- ---------------------------------------------------------------------
-
+-- catalogos
 CREATE TABLE tipos_habitacion (
     id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre        VARCHAR(120)  NOT NULL UNIQUE,
@@ -53,10 +45,7 @@ CREATE TABLE promociones (
     CONSTRAINT ck_promo_fechas CHECK (vigente_hasta >= vigente_desde)
 );
 
--- ---------------------------------------------------------------------
--- 2. PERSONAS Y USUARIOS
--- ---------------------------------------------------------------------
-
+-- personas y huespedes
 CREATE TABLE huespedes (
     id                BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombres           VARCHAR(80)  NOT NULL,
@@ -73,15 +62,10 @@ CREATE TABLE huespedes (
 CREATE INDEX idx_huesped_email  ON huespedes (email);
 CREATE INDEX idx_huesped_nombre ON huespedes (apellidos, nombres);
 
-
-
--- ---------------------------------------------------------------------
--- 3. RESERVAS
--- ---------------------------------------------------------------------
-
+-- reservas
 CREATE TABLE reservas (
     id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    codigo          VARCHAR(20) NOT NULL UNIQUE,              -- ej: HW-K7M2QX
+    codigo          VARCHAR(20) NOT NULL UNIQUE,
     huesped_id      BIGINT NOT NULL REFERENCES huespedes(id),
     promocion_id    BIGINT NULL     REFERENCES promociones(id),
     fecha_entrada   DATE NOT NULL,
@@ -100,8 +84,7 @@ CREATE INDEX idx_res_fechas  ON reservas (fecha_entrada, fecha_salida);
 CREATE INDEX idx_res_estado  ON reservas (estado);
 CREATE INDEX idx_res_huesped ON reservas (huesped_id);
 
--- Una reserva puede incluir varias habitaciones. Se guarda el precio del momento
--- para que un cambio de tarifa no altere reservas pasadas.
+-- detalle de habitaciones y precios
 CREATE TABLE reserva_habitaciones (
     reserva_id     BIGINT NOT NULL REFERENCES reservas(id) ON DELETE CASCADE,
     habitacion_id  BIGINT NOT NULL REFERENCES habitaciones(id),
@@ -134,10 +117,7 @@ CREATE TABLE pagos (
 );
 CREATE INDEX idx_pago_reserva ON pagos (reserva_id);
 
--- ---------------------------------------------------------------------
--- 4. CONTACTO Y AUDITORIA
--- ---------------------------------------------------------------------
-
+-- contacto y auditoria
 CREATE TABLE mensajes_contacto (
     id         BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre     VARCHAR(80)  NOT NULL,
@@ -160,11 +140,7 @@ CREATE TABLE auditoria_reservas (
 );
 CREATE INDEX idx_aud_reserva ON auditoria_reservas (reserva_id);
 
--- ---------------------------------------------------------------------
--- 5. TRIGGERS (en PostgreSQL cada trigger usa una funcion)
--- ---------------------------------------------------------------------
-
--- Impide reservar una habitacion que ya esta ocupada en esas fechas
+-- trigger para evitar solapamiento de fechas
 CREATE OR REPLACE FUNCTION fn_rh_sin_cruce() RETURNS trigger
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -194,7 +170,7 @@ CREATE TRIGGER trg_rh_sin_cruce
 BEFORE INSERT ON reserva_habitaciones
 FOR EACH ROW EXECUTE FUNCTION fn_rh_sin_cruce();
 
--- Actualiza "actualizado_en" en cada modificacion (PostgreSQL no lo hace solo)
+-- trigger para actualizar fecha de modificacion
 CREATE OR REPLACE FUNCTION fn_reservas_touch() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
@@ -206,7 +182,7 @@ CREATE TRIGGER trg_reservas_touch
 BEFORE UPDATE ON reservas
 FOR EACH ROW EXECUTE FUNCTION fn_reservas_touch();
 
--- Registra cada cambio de estado
+-- trigger de auditoria por cambio de estado
 CREATE OR REPLACE FUNCTION fn_reservas_auditar_update() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
@@ -221,7 +197,7 @@ CREATE TRIGGER trg_reservas_auditar_update
 AFTER UPDATE ON reservas
 FOR EACH ROW EXECUTE FUNCTION fn_reservas_auditar_update();
 
--- Registra las reservas eliminadas
+-- trigger de auditoria para eliminacion
 CREATE OR REPLACE FUNCTION fn_reservas_auditar_delete() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
@@ -234,12 +210,7 @@ CREATE TRIGGER trg_reservas_auditar_delete
 AFTER DELETE ON reservas
 FOR EACH ROW EXECUTE FUNCTION fn_reservas_auditar_delete();
 
--- ---------------------------------------------------------------------
--- 6. FUNCIONES Y PROCEDIMIENTOS
--- ---------------------------------------------------------------------
-
--- Habitaciones libres entre dos fechas (p_tipo NULL = todos los tipos)
--- Uso:  SELECT * FROM fn_habitaciones_disponibles(CURRENT_DATE, CURRENT_DATE + 2);
+-- consulta de disponibilidad de habitaciones
 CREATE OR REPLACE FUNCTION fn_habitaciones_disponibles(
     p_entrada DATE, p_salida DATE, p_tipo BIGINT DEFAULT NULL)
 RETURNS TABLE (hab_id BIGINT, hab_numero VARCHAR, hab_piso SMALLINT,
@@ -261,8 +232,7 @@ LANGUAGE sql STABLE AS $$
      ORDER BY t.precio_noche, h.numero;
 $$;
 
--- Recalcula el total = (habitaciones x noches + servicios) - descuento
--- Uso:  CALL sp_recalcular_total(1);
+-- recalculo de total con descuentos
 CREATE OR REPLACE PROCEDURE sp_recalcular_total(p_reserva BIGINT)
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -288,10 +258,7 @@ BEGIN
      WHERE id = p_reserva;
 END $$;
 
--- ---------------------------------------------------------------------
--- 7. VISTAS
--- ---------------------------------------------------------------------
-
+-- vistas de gestion y dashboard
 CREATE VIEW v_reservas_detalle AS
 SELECT r.id, r.codigo,
        g.nombres || ' ' || g.apellidos AS huesped,
@@ -331,10 +298,7 @@ SELECT to_char(fecha_entrada, 'YYYY-MM') AS mes,
  GROUP BY to_char(fecha_entrada, 'YYYY-MM')
  ORDER BY mes;
 
--- ---------------------------------------------------------------------
--- 8. DATOS DE EJEMPLO (precios y datos inventados: cambialos a los reales)
--- ---------------------------------------------------------------------
-
+-- datos de inicio
 INSERT INTO tipos_habitacion (nombre, descripcion, tamano_m2, cama, capacidad, precio_noche) VALUES
 ('Standard Individual con Vista a la Calle',  'Ambiente clásico y cálido con vista a la ciudad.',  18, 'Cama king-size', 1, 120.00),
 ('Standard Individual con Vista Interior',    'Silencio y tranquilidad en el corazón del hotel.',   18, 'Cama king-size', 1, 110.00),

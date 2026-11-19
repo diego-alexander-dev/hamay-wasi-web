@@ -4,12 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-// clase principal para iniciar la aplicacion
+// arranque del portal web
 @EnableAsync
 @SpringBootApplication
-public class HamayWasiApplication {
+public class HamayWasiWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HamayWasiApplication.class, args);
+        SpringApplication.run(HamayWasiWebApplication.class, args);
     }
 }
