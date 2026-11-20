@@ -39,7 +39,7 @@
                         <h3 class="h6 mb-2">Habitaciones reservadas:</h3>
                         <ul class="mb-0 small">
                             <li th:each="h : ${reserva.habitaciones}">
-                                Habitación <strong th:text="${h.habitacion.numero}">101</strong> — <span th:text="${h.nombreTipo}">Tipo</span>
+                                Habitación <strong th:text="${h.numero}">101</strong> — <span th:text="${h.nombreTipo}">Tipo</span>
                             </li>
                         </ul>
                     </div>

@@ -53,6 +53,11 @@ public class ReservaServicio {
         return servicio == null ? "" : servicio.getNombre();
     }
 
+    // nombre del servicio para las vistas
+    public String getNombreServicio() {
+        return getNombre();
+    }
+
     public BigDecimal getSubtotal() {
         if (precioUnitario == null) {
             return BigDecimal.ZERO;

@@ -124,12 +124,16 @@ public class PublicoController {
         model.addAttribute("reserva", reserva);
 
         String waLink = "";
-        if (reserva.getHuesped() != null && reserva.getHuesped().getTelefono() != null
-                && !reserva.getHuesped().getTelefono().isBlank()) {
-            waLink = whatsAppService.generarEnlaceDirecto(
-                    reserva.getHuesped().getTelefono(),
-                    whatsAppService.construirMensajeConfirmacion(reserva)
-            );
+        try {
+            if (reserva.getHuesped() != null && reserva.getHuesped().getTelefono() != null
+                    && !reserva.getHuesped().getTelefono().isBlank()) {
+                waLink = whatsAppService.generarEnlaceDirecto(
+                        reserva.getHuesped().getTelefono(),
+                        whatsAppService.construirMensajeConfirmacion(reserva)
+                );
+            }
+        } catch (Exception e) {
+            waLink = "";
         }
         model.addAttribute("waLink", waLink);
 
